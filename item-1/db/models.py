@@ -1,8 +1,10 @@
-import sqlalchemy as db
+from db.config import Base, engine
+from sqlalchemy import Column, String, Integer
 
-class Users():
-    Id = db.Column(db.Integer(), primary_key=True)
-    Username = db.Column(db.String(50), primary_key=False)
-    Fullname = db.Column(db.String(200), primary_key=False)
-    Password = db.Column(db.String(120), primary_key=False)
-    IsAdmin = db.Column(db.Integer(), primary_key=False)
+class Users(Base):
+    __tablename__ = "Users"
+    Id = Column(Integer(), primary_key=True)
+    Username = Column(String(50))
+    Fullname = Column(String(200))
+    Password = Column(String(120))
+    IsAdmin = Column(Integer())

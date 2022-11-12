@@ -1,5 +1,7 @@
 from sqlalchemy import inspect
+from sqlalchemy.sql import text
 from db.config import engine
+from db.config import session
 
 def add_column(engine, table_name, column):
     column_name = column.compile(dialect=engine.dialect)
@@ -14,3 +16,7 @@ def show_tables():
         for table_name in inspector.get_table_names(schema=schema):
             for column in inspector.get_columns(table_name, schema=schema):
                 print("Column: %s" % column)
+
+def select_query(table):
+    return session.query(text(table))
+    
