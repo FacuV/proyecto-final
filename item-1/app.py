@@ -1,51 +1,36 @@
-from flask import Flask, request
-from utils.functions import select_query
-from db.config import session
-from db.models import Users
+from flask import Flask, render_template, request
+from db.config import get_db_connection
+from utils.functions import create_user
 
 app = Flask(__name__)
 
 @app.route("/")
 def main():
-    return {'message': 'Hello world'}
+    cur, conn = get_db_connection()
+    users = cur.execute('SELECT * FROM Users')
+    return render_template('signin.html')
 
 @app.route("/new/user", methods = ['POST'])
 def newUser():
-    try:
-        name = request.json['name']
+    cur, conn  = get_db_connection()
+    with conn:
+        username = request.json['username']
         fullname = request.json['fullname']
         password = request.json['password']
         isadmin = request.json['isadmin']
-
-        user = Users(
-            Username=name,
-            Fullname=fullname,
-            Password=password,
-            IsAdmin=isadmin
-        )
-
-        session.add(user)
-        session.commit
         
-        return {
-            'error': False,
-            'message': f'User {name} creado exitosamente'
-        }
-    except Exception as e:
-        
-        return {
-                'error': True,
-                'message': e
-            }
+        user = username, fullname, password, isadmin
 
-@app.route("/user", methods = ['GET'])
-def getUser():
+        create_user(conn, cur, user)
 
-    users = select_query('Users')
+        return render_template('signin.html' )
 
-    return {
-        'error': False
-    }
+@app.route("/users", methods = ['GET'])
+def allUsers():
+    cur, conn = get_db_connection()
+    users = cur.execute('SELECT * FROM Users')
+    
+    return render_template('users.html', users=users)
 
 if __name__ == '__main__':
     app.run(debug=True)

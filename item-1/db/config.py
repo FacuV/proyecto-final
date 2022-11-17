@@ -1,17 +1,6 @@
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import create_engine
-from pathlib import Path
-from sqlalchemy.orm import sessionmaker
+import sqlite3
 
-BASE_DIR=str(Path(__file__).parent.absolute())
-
-DATABASE_URI = 'sqlite:////' + BASE_DIR + '/tfinal.db'
-
-engine = create_engine(DATABASE_URI, echo=True, future=True)
-
-Session = sessionmaker(bind=engine)
-session = Session()
-
-Base = declarative_base()
-
-Base.metadata.create_all(engine)
+def get_db_connection():
+    conn = sqlite3.connect('db/tfinal.db')
+    cur = conn.cursor()
+    return cur, conn

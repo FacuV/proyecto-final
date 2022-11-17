@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Usuarios</title>
+</head>
+<body>
+
+    {% block content %}
+    <div class="sign-in-container">
+        
+        <div class="sign-in-form-container">
+            <form action="#" method="post">
+
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username">
+                
+                <label for="fullname">Fullname</label>
+                <input type="text" name="fullname" id="fullname">
+                
+                <label for="username">Password</label>
+                <input type="text" name="password" id="password">
+                
+                <input type="button" value="Sign in">
+            </form>
+        </div>
+        <div class="register" >Quieres ver todos los usuarios?<a href="{{ url_for('allUsers') }}">Click aquí</a></div>
+        <div class="register" >¿No tienes cuenta? <a href="{{ url_for('main') }}">Regístrate</a></div>
+    </div>
+    {% endblock %}
+</body>
+</html>

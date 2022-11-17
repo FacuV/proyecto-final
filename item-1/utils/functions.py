@@ -1,22 +1,16 @@
-from sqlalchemy import inspect
-from sqlalchemy.sql import text
-from db.config import engine
-from db.config import session
-
-def add_column(engine, table_name, column):
-    column_name = column.compile(dialect=engine.dialect)
-    column_type = column.type.compile(engine.dialect)
-    engine.execute('ALTER TABLE %s ADD COLUMN %s %s' % (table_name, column_name, column_type))
-
-def show_tables():
-    inspector = inspect(engine)
-    schemas = inspector.get_schema_names()
-    for schema in schemas:
-        print("schema: %s" % schema)
-        for table_name in inspector.get_table_names(schema=schema):
-            for column in inspector.get_columns(table_name, schema=schema):
-                print("Column: %s" % column)
-
-def select_query(table):
-    return session.query(text(table))
+def create_user(conn, cur, user):
+    """
+    Inserts the user into the database
     
+    :param conn: the connection to the database
+    :param cur: the cursor object
+    :param user: a tuple of the form (username, fullname, password, isAdmin)
+    :return: The user id
+    """
+    sql = '''INSERT INTO Users (Username,Fullname,Password,IsAdmin) VALUES (?,?,?,?)'''
+
+    cur.execute(sql, user)
+    
+    conn.commit()
+
+    return cur.lastrowid
