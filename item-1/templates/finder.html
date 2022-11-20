@@ -12,6 +12,18 @@
     <form action="">
         <input type="search" required>
         <i class="fa fa-search"></i>
-      </form>
+    </form>
+    
+    <section>
+        <div class="container">
+            {% for artist in myList%}
+            <div class="column">
+                <h1>{{artist['album']}}</h1>
+                <p>By: {{artist['artist']}}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
 </body>
 </html>

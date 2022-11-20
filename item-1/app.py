@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import re
 from db.config import get_db_connection
-from utils.functions import create_user, logIn
+from utils.functions import create_user, logIn, getColumns, albumAndArtist
+from pprint import pprint
 
 app = Flask(__name__)
 
@@ -29,7 +30,7 @@ def newUser():
 
                 create_user(conn, cur, user)
 
-                return render_template('users.html')
+                return redirect('/users')
             else:
                 raise Exception("Debes ingresar todos los campos")
     except Exception:
@@ -41,22 +42,17 @@ def newUser():
 @app.route("/login", methods = ['POST'])
 def login():
     cur, conn  = get_db_connection()
-    # try:
     with conn:
         username = request.form['username']
         password = request.form['password']
 
-        response = logIn(conn, cur, username, password)
-        return {
-            'error': False,
-            'message': response
-        }
+        user = logIn(conn, cur, username, password)
+        isLogged = True if user else False
 
-    # except Exception:
-    #     return {
-    #         'error': True,
-    #         'message': f'Algo salió mal'
-    #     }
+        if isLogged:
+            return redirect('/search')
+        else:
+            return render_template('signin.html')
 
 @app.route("/users")
 def getUsers():
@@ -68,7 +64,16 @@ def getUsers():
 
 @app.route("/search")
 def searchImages():
-    return render_template('finder.html')
+    cur, conn  = get_db_connection()
+    album = albumAndArtist(conn, cur)
+    myList = []
+    for artist in album:
+        data = ('id', 'album', 'artist')
+        if len(artist) == len(data):
+            res = {data[i] : artist[i] for i, _ in enumerate(artist)}
+            myList.append(res)
+
+    return render_template('finder.html', myList=myList)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,3 +1,5 @@
+import requests
+from pprint import pprint
 def create_user(conn, cur, user):
     """
     Inserts the user into the database
@@ -24,11 +26,31 @@ def logIn(conn, cur, username, password):
     :param user: a tuple of the form (username, fullname, password, isAdmin)
     :return: The user id
     """
-    sql = f'''SELECT Username, Password FROM Users WHERE Username=username AND Password=password'''
-    print('Username: ', username)
-    print('Password: ', password)
-    cur.execute(sql, {'username': username, 'password': password})
+    sql = f'''SELECT Username FROM Users WHERE Username = "{username}" AND Password = "{password}"'''
+
+    cur.execute(sql)
     
-    response = cur.fetchall() 
+    response = cur.fetchone()
 
     return response
+
+def albumAndArtist(conn, cur):
+    sql = f'''SELECT Album.ArtistId, Album.title, Artist.name  
+                FROM Album 
+                INNER JOIN Artist
+                ON Album.ArtistId = Artist.ArtistId; '''
+
+    cur.execute(sql)
+    
+    response = cur.fetchall()
+
+    return response
+
+def getColumns(conn, cur, table):
+    sql = f'''SELECT * FROM "{table}" '''
+    data = cur.execute(sql)
+    columns = []
+    for column in data.description:
+        columns.append(column[0])
+
+    return columns
