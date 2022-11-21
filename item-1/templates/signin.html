@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>Usuarios</title>
+    <title>Sign up</title>
 </head>
 <body>
     {% block content %}
@@ -24,10 +24,6 @@
                         <div class="group">
                             <label for="pass" class="label">Password</label>
                             <input id="pass" type="password" name="password" class="input" data-type="password">
-                        </div>
-                        <div class="group">
-                            <input id="check" type="checkbox" class="check" checked>
-                            <label for="check"><span class="icon"></span> Keep me Signed in</label>
                         </div>
                         <div class="group">
                             <input type="submit" class="button" value="Sign In">

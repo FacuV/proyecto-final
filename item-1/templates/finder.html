@@ -6,22 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/finder.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <title>Usuarios</title>
+    <title>Search</title>
 </head>
 <body>
-    <form action="">
-        <input type="search" required>
+    <form action="/search" method="post">
+        <input type="search" name="filtering">
         <i class="fa fa-search"></i>
     </form>
     
     <section>
         <div class="container">
-            {% for artist in myList%}
-            <div class="column">
-                <h1>{{artist['album']}}</h1>
-                <p>By: {{artist['artist']}}</p>
-            </div>
-            {% endfor %}
+            {% if filteredData|length > 0 %}
+                {% for artist in filteredData %}
+                <div class="column">
+                    <h1>{{artist['album']}}</h1>
+                    <p>Song: {{artist['track']}}</p>
+                    <p>By: {{artist['artist']}}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                {% for artist in myList %}
+                <div class="column">
+                    <h1>{{artist['album']}}</h1>
+                    <p>By: {{artist['artist']}}</p>
+                </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </section>
 

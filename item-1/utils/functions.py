@@ -35,15 +35,16 @@ def logIn(conn, cur, username, password):
     return response
 
 def albumAndArtist(conn, cur):
-    sql = f'''SELECT Album.ArtistId, Album.title, Artist.name  
+    sql = f'''SELECT Album.ArtistId, Album.title, Artist.name ,  Track.name
                 FROM Album 
                 INNER JOIN Artist
-                ON Album.ArtistId = Artist.ArtistId; '''
+                ON Album.ArtistId = Artist.ArtistId
+                INNER JOIN Track ON Album.AlbumId=Track.AlbumId;
+                '''
 
     cur.execute(sql)
     
     response = cur.fetchall()
-
     return response
 
 def getColumns(conn, cur, table):

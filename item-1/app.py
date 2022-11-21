@@ -3,6 +3,8 @@ import re
 from db.config import get_db_connection
 from utils.functions import create_user, logIn, getColumns, albumAndArtist
 from pprint import pprint
+from collections import defaultdict
+from itertools import chain
 
 app = Flask(__name__)
 
@@ -62,18 +64,31 @@ def getUsers():
 
 
 
-@app.route("/search")
+@app.route("/search", methods=['GET', 'POST'])
 def searchImages():
     cur, conn  = get_db_connection()
     album = albumAndArtist(conn, cur)
+    
     myList = []
+
     for artist in album:
-        data = ('id', 'album', 'artist')
+        data = ('id', 'album', 'artist', 'track')
         if len(artist) == len(data):
             res = {data[i] : artist[i] for i, _ in enumerate(artist)}
             myList.append(res)
 
-    return render_template('finder.html', myList=myList)
+    filteredData = []
+
+    if request.method == 'POST':
+        filter = request.form['filtering']
+        for album in myList:
+            filter = filter.upper()
+            if album['album'].upper().startswith(filter) or album['artist'].upper().startswith(filter) or album['track'].upper().startswith(filter):
+
+                filteredData.append(album)    
+
+
+    return render_template('finder.html', myList=myList, filteredData=filteredData)
 
 if __name__ == '__main__':
     app.run(debug=True)
