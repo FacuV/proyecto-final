@@ -38,6 +38,7 @@ export function Movies() {
             
             for(let i = 0; i < data.results.length;i++){
                 const movie = data.results[i]
+                const date = movie.release_date.split('-')[0]
                 html += `
                     <section class="card-section" id="b${i}">
                         <img class="movie-img" src="https://image.tmdb.org/t/p/w500/${movie.backdrop_path}" alt="${movie.title}">
@@ -57,7 +58,7 @@ export function Movies() {
                                 <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="${movie.title}">
                                 <div class="description-div">
                                     <div class="title">
-                                        <h1>${movie.title}</h1>
+                                        <h1>${movie.title} (${date})</h1>
                                         <p>${movie.overview}</p>
                                     </div>
                                     <h3>Valoración</h3>

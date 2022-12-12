@@ -6,7 +6,8 @@ const root = document.getElementById('root')
 
 const router = (route) => {
     root.innerHTML = ""
-    const page = route.slice(-1)
+    const url = new URLSearchParams(window.location.hash.split('?')[1])
+    const page = url.get('page')
     switch(route) {
         case '#/':
             root.appendChild(Main())

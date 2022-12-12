@@ -32,15 +32,16 @@ export function Series() {
             }
     
             let data = await fetchSeries(actualPage)
-            
+            const newData = data.results.slice(data.results.length-5)
             let html = ""
             
-            for(let i = 0; i < data.results.length;i++){
+            for(let i = 0; i < newData.length;i++){
                 const serie = data.results[i]
                 const date = serie.first_air_date.split('-')[0]
+                const url = `https://image.tmdb.org/t/p/w500/${serie.backdrop_path}`
                 html += `
                     <section class="card-section" id="b${i}">
-                        <img class="movie-img" src="https://image.tmdb.org/t/p/w500/${serie.backdrop_path}" alt="${serie.name}">
+                        <img class="movie-img" src="${url}" alt="${serie.name}">
                         <div class="description-div">
                             <div class="title">
                                 <h1>${serie.name}</h1>
@@ -52,7 +53,9 @@ export function Series() {
     
                         <div id="m${serie.id}" class="modal">
     
-                            <div class="modal-content">
+                            <div 
+                                class="modal-content" 
+                            >
                                 <span id="close${serie.id}" class="close"></span>
                                 <img src="https://image.tmdb.org/t/p/w500/${serie.poster_path}" alt="${serie.name}">
                                 <div class="description-div">
@@ -81,7 +84,7 @@ export function Series() {
             }
             element.innerHTML = html
     
-            for(let i = 0; i < data.results.length;i++){
+            for(let i = 0; i < newData.length;i++){
                 const serie = data.results[i]
                 
                 let btn = element.querySelector(`#b${i}`)
