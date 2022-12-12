@@ -1,10 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 import re
+import random
 from db.config import get_db_connection
 from utils.functions import create_user, logIn, getColumns, albumAndArtist
-from pprint import pprint
-from collections import defaultdict
-from itertools import chain
 
 app = Flask(__name__)
 
@@ -68,6 +66,7 @@ def getUsers():
 def searchImages():
     cur, conn  = get_db_connection()
     album = albumAndArtist(conn, cur)
+    randomColor = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
     
     myList = []
 
@@ -88,7 +87,7 @@ def searchImages():
                 filteredData.append(album)    
 
 
-    return render_template('finder.html', myList=myList, filteredData=filteredData)
+    return render_template('finder.html', myList=myList, filteredData=filteredData, randomColor=randomColor)
 
 if __name__ == '__main__':
     app.run(debug=True)

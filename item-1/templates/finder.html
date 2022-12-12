@@ -19,16 +19,17 @@
             {% if filteredData|length > 0 %}
                 {% for artist in filteredData %}
                 <div class="column">
-                    <h1>{{artist['album']}}</h1>
-                    <p>Song: {{artist['track']}}</p>
-                    <p>By: {{artist['artist']}}</p>
+                    <h1 class="album">{{artist['album']}}</h1>
+                    <p class="song">Song: {{artist['track']}}</p>
+                    <p class="artist">By: {{artist['artist']}}</p>
                 </div>
                 {% endfor %}
             {% else %}
                 {% for artist in myList %}
                 <div class="column">
-                    <h1>{{artist['album']}}</h1>
-                    <p>By: {{artist['artist']}}</p>
+                    <h1 class="album">{{artist['album']}}</h1>
+                    <p class="song">Song: {{artist['track']}}</p>
+                    <p class="artist">By: {{artist['artist']}}</p>
                 </div>
                 {% endfor %}
             {% endif %}

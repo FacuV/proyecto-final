@@ -22,6 +22,9 @@ form{
     padding: 5px;
 }
 
+.queen {
+    height: 65%;
+}
 input{
     position: absolute;
     top: 2px;
@@ -54,7 +57,7 @@ input{
 
 form:hover,
 form:valid{
-    width: 200px;
+    width: 50%;
     cursor: pointer;
 }
 
@@ -92,21 +95,26 @@ section {
 }
 
 .container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
+    display: block
 }
 
 .column {
-    background-color: rgba(116, 129, 160, 0.9);
-    height: 350px;
-    width: 500px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    transition: 0.3s;
+    background-color: #f3f3f3;
+    box-shadow: rgba(255, 243, 243, 0.1) 0px 4px 12px;
+    margin: 5px;
+    transition: 0.2s;
     border-radius: 5px;
     padding: 10px;
+    margin-bottom: 10px;
+    color: #f4f4f4;
+}
+
+.album {
+    color: #3c1874;
+}
+
+.song, .artist {
+    color: #283747;
 }
 
 .column:hover {
