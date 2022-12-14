@@ -60,13 +60,18 @@ def getUsers():
     users = cur.execute('SELECT * FROM Users')
     return render_template('users.html', users=users)
 
+@app.route("/artist")
+def getArtists():
+    cur, conn  = get_db_connection()
+    users = cur.execute('SELECT * FROM Users')
+    return render_template('artists.html')
+
 
 
 @app.route("/search", methods=['GET', 'POST'])
 def searchImages():
     cur, conn  = get_db_connection()
     album = albumAndArtist(conn, cur)
-    randomColor = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
     
     myList = []
 
@@ -87,7 +92,7 @@ def searchImages():
                 filteredData.append(album)    
 
 
-    return render_template('finder.html', myList=myList, filteredData=filteredData, randomColor=randomColor)
+    return render_template('finder.html', myList=myList, filteredData=filteredData)
 
 if __name__ == '__main__':
     app.run(debug=True)
