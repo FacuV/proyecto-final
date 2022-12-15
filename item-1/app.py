@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, flash
 import re
 import random
 from db.config import get_db_connection
 from utils.functions import create_user, logIn, getColumns, albumAndArtist, getLastRegister, create_artist
 
 app = Flask(__name__)
+app.secret_key = 'mysecretkey'
 
 @app.route("/")
 def main():
@@ -76,19 +77,22 @@ def getArtist():
         artist = lastId + 1, name
 
         create_artist(conn, cur, artist)
+        flash(f'Artist {name} added succesfully')
+        return redirect(url_for('getArtist'))
 
-        return render_template('artists.html', artist=name)
-
-
+@app.route("/edit/artist/<string:id>")
 def updateArtist():
     cur, conn  = get_db_connection()
     users = cur.execute('SELECT * FROM Users')
     return render_template('artists.html')
 
-def deleteArtist():
+@app.route("/delete/artist/<string:id>")
+def deleteArtist(id):
     cur, conn  = get_db_connection()
-    users = cur.execute('SELECT * FROM Users')
-    return render_template('artists.html')
+    cur.execute(f'DELETE FROM Artist WHERE ArtistId = {id}')
+    conn.commit()
+    flash(f'Artist with id {id} removed succesfully')
+    return redirect(url_for('getArtist'))
 
 
 

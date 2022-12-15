@@ -14,8 +14,12 @@
 
 .container { 
     display: block;
-    list-style: none;
     padding-left: 20%;
+}
+
+.container, ul {
+    list-style: none;
+
 }
 
 .artist {
