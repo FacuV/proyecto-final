@@ -81,10 +81,29 @@ def getArtist():
         return redirect(url_for('getArtist'))
 
 @app.route("/edit/artist/<string:id>")
-def updateArtist():
+def editArtist(id):
     cur, conn  = get_db_connection()
-    users = cur.execute('SELECT * FROM Users')
-    return render_template('artists.html')
+    cur.execute(f'SELECT * FROM Artist WHERE ArtistId = {id}')
+    artist = cur.fetchone()
+
+    return render_template('edit-artist.html', artist=artist)
+
+@app.route("/update/artist/<string:id>", methods=['POST'])
+def updateArtist(id):
+    if request.method == 'POST':
+        cur, conn  = get_db_connection()
+        newName = request.form['new-name']
+        data = (newName, id)
+        query = (f'''
+            Update Artist 
+            set Name = ? 
+            WHERE ArtistId = ?
+            ''')
+        cur.execute(query, data)
+        conn.commit()
+        flash(f'Artist {newName} updated successfully')
+        return redirect(url_for('getArtist'))
+
 
 @app.route("/delete/artist/<string:id>")
 def deleteArtist(id):
