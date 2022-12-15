@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 import re
 import random
 from db.config import get_db_connection
-from utils.functions import create_user, logIn, getColumns, albumAndArtist
+from utils.functions import create_user, logIn, getColumns, albumAndArtist, getLastRegister, create_artist
 
 app = Flask(__name__)
 
@@ -60,8 +60,32 @@ def getUsers():
     users = cur.execute('SELECT * FROM Users')
     return render_template('users.html', users=users)
 
-@app.route("/artist")
-def getArtists():
+@app.route("/artist", methods=['GET', 'POST'])
+def getArtist():
+    cur, conn  = get_db_connection()
+    lastId = getLastRegister(conn, cur, 'Artist', 'ArtistId')[0]
+
+    if request.method == 'GET':
+        cur.execute('SELECT * FROM Artist')
+        artists = cur.fetchall()
+
+        return render_template('artists.html', artists=artists)
+  
+    elif request.method == 'POST':
+        name = request.form['artist-name']
+        artist = lastId + 1, name
+
+        create_artist(conn, cur, artist)
+
+        return render_template('artists.html', artist=name)
+
+
+def updateArtist():
+    cur, conn  = get_db_connection()
+    users = cur.execute('SELECT * FROM Users')
+    return render_template('artists.html')
+
+def deleteArtist():
     cur, conn  = get_db_connection()
     users = cur.execute('SELECT * FROM Users')
     return render_template('artists.html')

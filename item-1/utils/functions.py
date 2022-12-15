@@ -55,3 +55,27 @@ def getColumns(conn, cur, table):
         columns.append(column[0])
 
     return columns
+
+def getLastRegister(conn, cur, table, column):
+    sql = f'''SELECT * FROM {table} ORDER BY {column} DESC LIMIT 1; '''
+    cur.execute(sql)
+    data = cur.fetchone()
+
+    return data
+
+def create_artist(conn, cur, artist):
+    """
+    Inserts the artist into the database
+    
+    :param conn: the connection to the database
+    :param cur: the cursor object
+    :param user: a tuple of the form (username, fullname, password, isAdmin)
+    :return: The user id
+    """
+    sql = '''INSERT INTO Artist (ArtistId, Name) VALUES (?,?)'''
+
+    cur.execute(sql, artist)
+    
+    conn.commit()
+
+    return cur.lastrowid
